@@ -1,0 +1,114 @@
+# ============================================================
+# docker-compose.yml — Entorno de DESARROLLO LOCAL
+# TalentoHumano | Next.js 16 + PostgreSQL 16 + Redis
+# ============================================================
+version: "3.9"
+
+services:
+  # ── PostgreSQL 16 ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: th_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-th_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-th_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-talento_humano}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./infra/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-th_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - th_net
+
+  # ── Redis (session cache / queue) ─────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: th_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-th_redis_secret} --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-th_redis_secret}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - th_net
+
+  # ── Next.js App ───────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder        # Use 'runner' for production-like test
+    container_name: th_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-th_user}:${POSTGRES_PASSWORD:-th_secret}@postgres:5432/${POSTGRES_DB:-talento_humano}?schema=public
+      REDIS_URL: redis://:${REDIS_PASSWORD:-th_redis_secret}@redis:6379
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: "1"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    networks:
+      - th_net
+
+  # ── Prisma Studio (dev only) ──────────────────────────────
+  prisma-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    container_name: th_prisma_studio
+    profiles: ["tools"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-th_user}:${POSTGRES_PASSWORD:-th_secret}@postgres:5432/${POSTGRES_DB:-talento_humano}?schema=public
+    ports:
+      - "5555:5555"
+    command: npx prisma studio
+    networks:
+      - th_net
+
+# ── Volumes ────────────────────────────────────────────────
+volumes:
+  pg_data:
+    driver: local
+  redis_data:
+    driver: local
+
+# ── Networks ───────────────────────────────────────────────
+networks:
+  th_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

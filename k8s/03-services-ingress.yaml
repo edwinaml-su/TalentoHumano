@@ -1,0 +1,58 @@
+# ============================================================
+# k8s/03-services-ingress.yaml
+# Services + Ingress con TLS (AWS ALB o NGINX)
+# ============================================================
+---
+# ClusterIP para comunicación interna
+apiVersion: v1
+kind: Service
+metadata:
+  name: th-app-svc
+  namespace: talento-humano
+  labels:
+    app: th-app
+spec:
+  type: ClusterIP
+  selector:
+    app: th-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
+
+---
+# Ingress con AWS Load Balancer Controller
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: th-app-ingress
+  namespace: talento-humano
+  annotations:
+    # AWS ALB Controller
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:123456789:certificate/REPLACE_ME"
+    # Rate limiting y WAF
+    alb.ingress.kubernetes.io/wafv2-acl-arn: "arn:aws:wafv2:us-east-1:123456789:regional/webacl/TH-WAF/REPLACE_ME"
+    # Health check para el ALB
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    # Seguridad headers
+    alb.ingress.kubernetes.io/load-balancer-attributes: "routing.http.drop_invalid_header_fields.enabled=true"
+spec:
+  rules:
+    - host: talentoh.avante.com.sv
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: th-app-svc
+                port:
+                  number: 80

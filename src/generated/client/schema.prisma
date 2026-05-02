@@ -1,0 +1,618 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 0. Catálogos de RRHH
+model ContractType {
+  id        String     @id @default(cuid())
+  name      String     @unique // "Indefinido", "Plazo Fijo", "Obra o Servicio"
+  isActive  Boolean    @default(true)
+  employees Employee[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Bank {
+  id        String     @id @default(cuid())
+  name      String     @unique // "Banco Agrícola", "Davivienda"
+  code      String?    @unique // Código bancario para ACH
+  isActive  Boolean    @default(true)
+  employees Employee[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model AfpType {
+  id        String     @id @default(cuid())
+  name      String     @unique // "CRECER", "CONFIA", "IPSFA"
+  code      String?    @unique
+  rate      Decimal    @default(0.0725) @db.Decimal(5, 4) // 7.25%
+  isActive  Boolean    @default(true)
+  employees Employee[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum BankAccountType {
+  SAVINGS
+  CHECKING
+}
+
+// 1. Catálogos de Acceso y Sistema
+model Role {
+  id          String               @id @default(cuid())
+  name        String               @unique
+  description String?
+  isCorporate Boolean              @default(false) // Flag for multi-unit selection
+  users       UserUnitAssignment[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id    String           @id @default(cuid())
+  code  String           @unique
+  name  String
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
+model User {
+  id           String               @id @default(cuid())
+  email        String               @unique
+  passwordHash String
+  employeeId   String?              @unique
+  employee     Employee?            @relation(fields: [employeeId], references: [id])
+  assignments  UserUnitAssignment[] // New many-to-many with roles per unit
+  isActive     Boolean              @default(true)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+model UserUnitAssignment {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+  roleId     String
+  role       Role     @relation(fields: [roleId], references: [id])
+  isDefault  Boolean  @default(false)
+
+  @@unique([userId, locationId, roleId])
+}
+
+model CostCenter {
+  id          String     @id @default(cuid())
+  code        String     @unique
+  name        String
+  description String?
+  budget      Decimal?   @db.Decimal(18, 2)
+  locationId  String
+  location    Location   @relation(fields: [locationId], references: [id])
+  isActive    Boolean    @default(true)
+  employees   Employee[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+// 2. Estructura Organizativa
+model Organization {
+  id             String       @id @default(cuid())
+  taxId          String       @unique
+  legalName      String
+  commercialName String
+  countryId      String
+  country        Country      @relation(fields: [countryId], references: [id])
+  locations      Location[]
+  departments    Department[]
+  shifts         Shift[]
+  gerencias      Gerencia[]
+  employees      Employee[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Country {
+  id            String         @id @default(cuid())
+  isoCode       String         @unique
+  name          String
+  organizations Organization[]
+  currencyId    String?
+  currency      Currency?      @relation(fields: [currencyId], references: [id])
+  taxTables     TaxTable[]
+  employees     Employee[]
+}
+
+model Currency {
+  id        String          @id @default(cuid())
+  code      String          @unique
+  name      String?
+  symbol    String
+  countries Country[]
+  salaries  SalaryHistory[]
+}
+
+model Gerencia {
+  id             String       @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  departments    Department[]
+  employees      Employee[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Department {
+  id             String       @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  gerenciaId     String?
+  gerencia       Gerencia?    @relation(fields: [gerenciaId], references: [id])
+  positions      Position[]
+  shifts         Shift[]
+}
+
+model Location {
+  id             String               @id @default(cuid())
+  name           String
+  organizationId String
+  organization   Organization         @relation(fields: [organizationId], references: [id])
+  employees      Employee[]
+  shifts         Shift[]
+  users          UserUnitAssignment[]
+  payrollRuns    PayrollRun[]
+  costCenters    CostCenter[]
+}
+
+model Position {
+  id               String     @id @default(cuid())
+  title            String
+  description      String?
+  departmentId     String
+  department       Department @relation(fields: [departmentId], references: [id])
+  parentPositionId String?
+  parentPosition   Position?  @relation("PositionHierarchy", fields: [parentPositionId], references: [id])
+  subordinates     Position[] @relation("PositionHierarchy")
+  employees        Employee[]
+  isActive         Boolean    @default(true)
+}
+
+// 3. Maestro de Empleados (Expediente Digital según requerimientos)
+model Employee {
+  id            String  @id @default(cuid())
+  employeeCode  String  @unique
+  firstName     String
+  middleName    String?
+  thirdName     String?
+  firstSurname  String
+  secondSurname String?
+  fullName      String // Full name according to DUI
+
+  // 1. Identificación y Personales
+  dui              String? @unique
+  nit              String? @unique
+  isssNumber       String? @unique
+  nupNumber        String? @unique
+  address          String?
+  department       String? // Depto de residencia
+  municipality     String? // Municipio de residencia
+  phone            String?
+  personalEmail    String? @unique
+  emergencyContact String? // Nombre y teléfono
+
+  // 2. Contractual y Legal
+  hireDate        DateTime
+  terminationDate DateTime?
+  contractTypeId  String?
+  contractType    ContractType?  @relation(fields: [contractTypeId], references: [id])
+  afpTypeId       String?
+  afpType         AfpType?       @relation(fields: [afpTypeId], references: [id])
+  status          EmployeeStatus @default(ACTIVE)
+
+  // Jerarquía
+  managerId    String?
+  manager      Employee?  @relation("Hierarchy", fields: [managerId], references: [id])
+  subordinates Employee[] @relation("Hierarchy")
+
+  // Relaciones
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  gerenciaId     String?
+  gerencia       Gerencia?     @relation(fields: [gerenciaId], references: [id])
+  locationId     String
+  location       Location      @relation(fields: [locationId], references: [id])
+  positionId     String
+  position       Position      @relation(fields: [positionId], references: [id])
+  countryId      String // Residencia fiscal
+  country        Country       @relation(fields: [countryId], references: [id])
+
+  user User?
+
+  // 3. Expediente Digital (Documentos escaneados)
+  documents EmployeeDocument[]
+
+  // 4. Gestión de Nómina y Financiera
+  bankId            String?
+  bank              Bank?            @relation(fields: [bankId], references: [id])
+  bankAccountType   BankAccountType?
+  bankAccountNumber String?
+
+  salaryHistory        SalaryHistory[]
+  payrollRuns          PayrollRunEmployee[]
+  vacations            Vacation[]
+  loans                Loan[]
+  financialObligations FinancialObligation[]
+  incidents            PayrollIncident[]
+  attendances          Attendance[]
+  shiftId              String?
+  shift                Shift?                @relation(fields: [shiftId], references: [id])
+  costCenterId         String?
+  costCenter           CostCenter?           @relation(fields: [costCenterId], references: [id])
+
+  // Académico y Profesional
+  studies        AcademicStudy[]
+  certifications Certification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AcademicStudy {
+  id          String      @id @default(cuid())
+  employeeId  String
+  employee    Employee    @relation(fields: [employeeId], references: [id])
+  degree      String // e.g. "Ingeniería en Sistemas", "Bachillerato"
+  institution String // "Universidad de El Salvador"
+  startDate   DateTime?
+  endDate     DateTime?
+  status      StudyStatus @default(COMPLETED)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum StudyStatus {
+  IN_PROGRESS
+  COMPLETED
+  DROPPED
+  PAUSED
+}
+
+model Certification {
+  id            String    @id @default(cuid())
+  employeeId    String
+  employee      Employee  @relation(fields: [employeeId], references: [id])
+  name          String // "AWS Solutions Architect"
+  issuingEntity String // "Amazon Web Services"
+  issueDate     DateTime?
+  expiryDate    DateTime?
+  credentialId  String?
+  credentialUrl String? // LinkedIn/Provider proof
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model EmployeeDocument {
+  id         String           @id @default(cuid())
+  employeeId String
+  employee   Employee         @relation(fields: [employeeId], references: [id])
+  category   DocumentCategory // IDENTIFICATION, CONTRACTUAL, ACADEMIC, PAYROLL
+  title      String // DUI frontal, CV, Título Bachiller, etc.
+  fileUrl    String? // Ruta al almacenamiento (S3/Local)
+  uploadDate DateTime         @default(now())
+}
+
+enum DocumentCategory {
+  IDENTIFICATION
+  CONTRACTUAL
+  ACADEMIC
+  PAYROLL
+  LEGAL
+}
+
+model SalaryHistory {
+  id            String   @id @default(cuid())
+  employeeId    String
+  employee      Employee @relation(fields: [employeeId], references: [id])
+  amount        Decimal  @db.Decimal(18, 2)
+  currencyId    String
+  currency      Currency @relation(fields: [currencyId], references: [id])
+  effectiveDate DateTime
+  createdAt     DateTime @default(now())
+}
+
+model Vacation {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  startDate  DateTime
+  endDate    DateTime
+  daysTaken  Int
+  status     String   @default("APPROVED") // PENDING, APPROVED, TAKEN
+}
+
+model Loan {
+  id           String   @id @default(cuid())
+  employeeId   String
+  employee     Employee @relation(fields: [employeeId], references: [id])
+  totalAmount  Decimal  @db.Decimal(18, 2)
+  balance      Decimal  @db.Decimal(18, 2)
+  installments Int
+  reason       String?
+  createdAt    DateTime @default(now())
+}
+
+model FinancialObligation {
+  id          String         @id @default(cuid())
+  employeeId  String
+  employee    Employee       @relation(fields: [employeeId], references: [id])
+  type        ObligationType
+  description String?
+  totalAmount Decimal        @db.Decimal(18, 2)
+  quota       Decimal        @db.Decimal(18, 2)
+  balance     Decimal        @db.Decimal(18, 2)
+  startDate   DateTime
+  status      Boolean        @default(true) // true = Activo, false = Inactivo
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+enum ObligationType {
+  HOSPITAL
+  BANK_LOAN
+  JUDICIAL_SEIZURE
+  PROCURADURIA
+  FOSOFAMILIA
+}
+
+model PayrollRun {
+  id          String               @id @default(cuid())
+  locationId  String? // Optional for global runs, but usually per OU
+  location    Location?            @relation(fields: [locationId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  status      String // DRAFT, PROCESSED, CLOSED
+  payrollType String // QUINCENAL, MENSUAL, etc.
+  employees   PayrollRunEmployee[]
+  incidents   PayrollIncident[]
+  createdAt   DateTime             @default(now())
+}
+
+model PayrollIncident {
+  id           String       @id @default(cuid())
+  payrollRunId String
+  payrollRun   PayrollRun   @relation(fields: [payrollRunId], references: [id])
+  employeeId   String
+  employee     Employee     @relation(fields: [employeeId], references: [id])
+  type         IncidentType
+  amount       Decimal      @db.Decimal(18, 2)
+  quantity     Decimal?     @db.Decimal(18, 2) // For days/hours
+  date         DateTime     @default(now())
+  notes        String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+enum IncidentType {
+  REINTEGRO
+  SEGUNDA_PLAZA
+  INCAPACIDAD_ISSS
+  AUSENCIA_INJUSTIFICADA
+  LLEGADA_TARDE
+  REGENCIA
+  VACACIONES_GOCE
+  VACACIONES_PRIMA
+  VIATICOS
+  COMISION
+  BONO
+  FESTIVIDAD_DIA
+  FESTIVIDAD_NOCHE
+  FESTIVIDAD_MONTO
+  DIA_DESCANSO
+  EXTRA_NOCTURNA
+  EXTRA_DIURNA
+  NOCTURNIDAD
+  HORA_ADICIONAL
+}
+
+model PayrollRunEmployee {
+  id           String     @id @default(cuid())
+  payrollRunId String
+  payrollRun   PayrollRun @relation(fields: [payrollRunId], references: [id])
+  employeeId   String
+  employee     Employee   @relation(fields: [employeeId], references: [id])
+
+  // Basic Info for Grid
+  correlativo Int     @default(0)
+  afpStatus   String? // ESTADO AFP
+  isssStatus  String? // ISSS (Status or Number)
+
+  // Earnings & Hours
+  baseSalary      Decimal @default(0) @db.Decimal(18, 2)
+  planHours       Decimal @default(0) @db.Decimal(18, 2)
+  workedHours     Decimal @default(0) @db.Decimal(18, 2)
+  workedDays      Decimal @default(0) @db.Decimal(18, 2)
+  earnedSalary    Decimal @default(0) @db.Decimal(18, 2)
+  secondPositions Decimal @default(0) @db.Decimal(18, 2)
+
+  extraPlanHoursCount  Decimal @default(0) @db.Decimal(18, 2)
+  extraPlanHoursAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  nightShiftHoursCount Decimal @default(0) @db.Decimal(18, 2)
+  nightShiftAmount     Decimal @default(0) @db.Decimal(18, 2)
+
+  overtimeDayHoursCount Decimal @default(0) @db.Decimal(18, 2)
+  overtimeDayAmount     Decimal @default(0) @db.Decimal(18, 2)
+
+  overtimeNightHoursCount Decimal @default(0) @db.Decimal(18, 2)
+  overtimeNightAmount     Decimal @default(0) @db.Decimal(18, 2)
+
+  restDaysWorkedCount  Decimal @default(0) @db.Decimal(18, 2)
+  restDaysWorkedAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  holidayDaysCount  Decimal @default(0) @db.Decimal(18, 2)
+  holidayDaysAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  nightHolidayHoursCount Decimal @default(0) @db.Decimal(18, 2)
+  nightHolidayAmount     Decimal @default(0) @db.Decimal(18, 2)
+
+  extraHolidayHoursCount Decimal @default(0) @db.Decimal(18, 2)
+  extraHolidayAmount     Decimal @default(0) @db.Decimal(18, 2)
+
+  totalHolidaysAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  bonuses     Decimal @default(0) @db.Decimal(18, 2)
+  commissions Decimal @default(0) @db.Decimal(18, 2)
+  stipends    Decimal @default(0) @db.Decimal(18, 2) // VIATICOS
+
+  vacationBonus      Decimal @default(0) @db.Decimal(18, 2) // 30%
+  vacationDaysTaken  Decimal @default(0) @db.Decimal(18, 2)
+  vacationDaysAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  regencies Decimal @default(0) @db.Decimal(18, 2)
+
+  // Deductions
+  lateArrivalsDeduction     Decimal @default(0) @db.Decimal(18, 2)
+  unjustifiedAbsencesCount  Decimal @default(0) @db.Decimal(18, 2)
+  unjustifiedAbsencesAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  isssLeaveDeductionCount  Decimal @default(0) @db.Decimal(18, 2)
+  isssLeaveDeductionAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  isssLeaveFullPayCount  Decimal @default(0) @db.Decimal(18, 2)
+  isssLeaveFullPayAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  unpaidLeaveDeduction Decimal @default(0) @db.Decimal(18, 2)
+  reimbursements       Decimal @default(0) @db.Decimal(18, 2) // REINTEGROS (usually an addition but sometimes adjustment)
+
+  totalBenefits Decimal @default(0) @db.Decimal(18, 2)
+
+  // Social Security & Taxes (El Salvador specific)
+  isssHealthDeduction Decimal @default(0) @db.Decimal(18, 2)
+  afpCrecerDeduction  Decimal @default(0) @db.Decimal(18, 2)
+  afpConfiaDeduction  Decimal @default(0) @db.Decimal(18, 2)
+  ipsfaDeduction      Decimal @default(0) @db.Decimal(18, 2)
+
+  taxableIncome Decimal @default(0) @db.Decimal(18, 2)
+  incomeTax     Decimal @default(0) @db.Decimal(18, 2) // I.S.R.
+
+  otherDeductions       Decimal @default(0) @db.Decimal(18, 2)
+  vialidadDeduction     Decimal @default(0) @db.Decimal(18, 2) // VIALIDAD 2026
+  fsvDeduction          Decimal @default(0) @db.Decimal(18, 2) // FSV
+  procuraduriaDeduction Decimal @default(0) @db.Decimal(18, 2)
+  judicialSeizure       Decimal @default(0) @db.Decimal(18, 2) // EMBARGO JUDICIAL
+  bankLoansDeduction    Decimal @default(0) @db.Decimal(18, 2)
+  hospitalDeduction     Decimal @default(0) @db.Decimal(18, 2)
+
+  totalDeductions Decimal @default(0) @db.Decimal(18, 2)
+  netPay          Decimal @default(0) @db.Decimal(18, 2) // VALOR A RECIBIR
+
+  createdAt DateTime @default(now())
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TERMINATED
+}
+
+// 5. Asistencia y Horarios
+model Shift {
+  id             String       @id @default(cuid())
+  name           String
+  startTime      String // e.g. "08:00"
+  endTime        String // e.g. "17:00"
+  gracePeriod    Int          @default(15) // Minutes for late mark
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  attendances    Attendance[]
+  employees      Employee[]
+  departments    Department[]
+  locations      Location[]
+  isActive       Boolean      @default(true)
+  isOvernight    Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Attendance {
+  id              String           @id @default(cuid())
+  employeeId      String
+  employee        Employee         @relation(fields: [employeeId], references: [id])
+  date            DateTime         @db.Date
+  clockIn         DateTime? // Optional for manual hourly entry
+  clockOut        DateTime?
+  totalHours      Decimal?         @db.Decimal(5, 2) // For manual timesheet entry
+  shiftId         String?
+  shift           Shift?           @relation(fields: [shiftId], references: [id])
+  status          AttendanceStatus @default(PRESENT)
+  lateMinutes     Int              @default(0)
+  overtimeMinutes Int              @default(0)
+  notes           String?
+  location        String? // GPS or Office name
+  createdAt       DateTime         @default(now())
+
+  @@unique([employeeId, date])
+}
+
+// 6. Configuración de Impuestos y Reglas
+model TaxTable {
+  id        String       @id @default(cuid())
+  name      String // e.g. "ISR El Salvador 1991"
+  countryId String
+  country   Country      @relation(fields: [countryId], references: [id])
+  frequency String // MONTHLY, BIWEEKLY, WEEKLY
+  brackets  TaxBracket[]
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model TaxBracket {
+  id          String   @id @default(cuid())
+  taxTableId  String
+  taxTable    TaxTable @relation(fields: [taxTableId], references: [id])
+  fromAmount  Decimal  @db.Decimal(18, 2)
+  toAmount    Decimal? @db.Decimal(18, 2)
+  fixedAmount Decimal  @db.Decimal(18, 2)
+  percentage  Decimal  @db.Decimal(18, 4)
+  excessOf    Decimal  @db.Decimal(18, 2)
+  order       Int      @default(0)
+}
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  ABSENT
+  EXCUSED
+  VACATION
+  INCAPACITY
+  REST_DAY
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String // e.g., "CREATE_INCIDENT", "CLOSE_PAYROLL", "UPDATE_SALARY"
+  entity    String // e.g., "PayrollIncident", "PayrollRun"
+  entityId  String?
+  details   Json? // Stores old/new values
+  ipAddress String?
+  createdAt DateTime @default(now())
+}

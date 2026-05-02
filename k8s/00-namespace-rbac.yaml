@@ -1,0 +1,52 @@
+# ============================================================
+# k8s/00-namespace-rbac.yaml
+# Namespace, ServiceAccount, Role & RoleBinding para TalentoHumano
+# ============================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: talento-humano
+  labels:
+    app.kubernetes.io/part-of: talento-humano
+    environment: production
+
+---
+# ServiceAccount para la app (mínimos privilegios)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: th-app-sa
+  namespace: talento-humano
+  labels:
+    app.kubernetes.io/name: th-app
+
+---
+# Role: solo puede leer Secrets y ConfigMaps propios
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: th-app-role
+  namespace: talento-humano
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: th-app-rolebinding
+  namespace: talento-humano
+subjects:
+  - kind: ServiceAccount
+    name: th-app-sa
+    namespace: talento-humano
+roleRef:
+  kind: Role
+  apiRef: th-app-role   # ← referencia al Role arriba
+  apiGroup: rbac.authorization.k8s.io

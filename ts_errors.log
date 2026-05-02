@@ -1,0 +1,49 @@
+.next/dev/types/validator.ts(288,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/afp-types/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/afp-types/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ rate: number; id: string; name: string; createdAt: Date; updatedAt: Date; isActive: boolean; code: string | null; }> | NextResponse<...> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(306,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/banks/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/banks/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ id: string; name: string; createdAt: Date; updatedAt: Date; isActive: boolean; code: string | null; }> | NextResponse<...> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(324,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/contract-types/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/contract-types/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ id: string; name: string; createdAt: Date; updatedAt: Date; isActive: boolean; }> | NextResponse<...> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(360,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/gerencias/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/gerencias/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ id: string; name: string; organizationId: string; createdAt: Date; updatedAt: Date; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(396,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/positions/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/positions/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ department: { id: string; name: string; organizationId: string; gerenciaId: string | null; }; } & { id: string; description: string | null; title: string; departmentId: string; }> | NextResponse<...> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(414,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/config/shifts/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/config/shifts/[id]">'.
+  Types of property 'PUT' are incompatible.
+    Type '(req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ id: string; name: string; organizationId: string; createdAt: Date; updatedAt: Date; startTime: string; endTime: string; gracePeriod: number; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(432,31): error TS2344: Type 'typeof import("C:/proyecto/TalentoHumano/src/app/api/employees-data/[id]/documents/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/employees-data/[id]/documents">'.
+  Types of property 'GET' are incompatible.
+    Type '(_req: Request, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ id: string; employeeId: string; title: string; category: DocumentCategory; fileUrl: string | null; uploadDate: Date; }[]> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.

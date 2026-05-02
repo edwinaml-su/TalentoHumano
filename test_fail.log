@@ -1,0 +1,87 @@
+
+> talento-humano@0.1.0 test
+> jest --passWithNoTests __tests__/api/positions.test.ts
+
+FAIL __tests__/api/positions.test.ts
+  GET /api/config/positions
+    ├ù retorna lista de posiciones con sus departamentos (1 ms)
+    ├ù cada posici├│n incluye la relaci├│n department
+    ├ù retorna lista vac├¡a cuando no hay posiciones
+    ├ù ordena las posiciones por t├¡tulo (asc) ΓÇö verifica que Prisma recibe el orderBy correcto (1 ms)
+    ├ù retorna 500 cuando Prisma lanza un error
+
+  ΓùÅ GET /api/config/positions ΓÇ║ retorna lista de posiciones con sus departamentos
+
+    TypeError: Cannot read properties of undefined (reading 'position')
+
+      26 | describe('GET /api/config/positions', () => {
+      27 |   it('retorna lista de posiciones con sus departamentos', async () => {
+    > 28 |     (prisma.position.findMany as jest.Mock).mockResolvedValueOnce(mockPositions);
+         |             ^
+      29 |
+      30 |     const response = await GET();
+      31 |     const json = await response.json();
+
+      at Object.<anonymous> (__tests__/api/positions.test.ts:28:13)
+
+  ΓùÅ GET /api/config/positions ΓÇ║ cada posici├│n incluye la relaci├│n department
+
+    TypeError: Cannot read properties of undefined (reading 'position')
+
+      37 |
+      38 |   it('cada posici├│n incluye la relaci├│n department', async () => {
+    > 39 |     (prisma.position.findMany as jest.Mock).mockResolvedValueOnce(mockPositions);
+         |             ^
+      40 |
+      41 |     const response = await GET();
+      42 |     const json = await response.json();
+
+      at Object.<anonymous> (__tests__/api/positions.test.ts:39:13)
+
+  ΓùÅ GET /api/config/positions ΓÇ║ retorna lista vac├¡a cuando no hay posiciones
+
+    TypeError: Cannot read properties of undefined (reading 'position')
+
+      47 |
+      48 |   it('retorna lista vac├¡a cuando no hay posiciones', async () => {
+    > 49 |     (prisma.position.findMany as jest.Mock).mockResolvedValueOnce([]);
+         |             ^
+      50 |
+      51 |     const response = await GET();
+      52 |     const json = await response.json();
+
+      at Object.<anonymous> (__tests__/api/positions.test.ts:49:13)
+
+  ΓùÅ GET /api/config/positions ΓÇ║ ordena las posiciones por t├¡tulo (asc) ΓÇö verifica que Prisma recibe el orderBy correcto
+
+    TypeError: Cannot read properties of undefined (reading 'position')
+
+      57 |
+      58 |   it('ordena las posiciones por t├¡tulo (asc) ΓÇö verifica que Prisma recibe el orderBy correcto', async () => {
+    > 59 |     (prisma.position.findMany as jest.Mock).mockResolvedValueOnce(mockPositions);
+         |             ^
+      60 |
+      61 |     await GET();
+      62 |
+
+      at Object.<anonymous> (__tests__/api/positions.test.ts:59:13)
+
+  ΓùÅ GET /api/config/positions ΓÇ║ retorna 500 cuando Prisma lanza un error
+
+    TypeError: Cannot read properties of undefined (reading 'position')
+
+      66 |
+      67 |   it('retorna 500 cuando Prisma lanza un error', async () => {
+    > 68 |     (prisma.position.findMany as jest.Mock).mockRejectedValueOnce(new Error('DB fail'));
+         |             ^
+      69 |
+      70 |     const response = await GET();
+      71 |     const json = await response.json();
+
+      at Object.<anonymous> (__tests__/api/positions.test.ts:68:13)
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 5 total
+Snapshots:   0 total
+Time:        0.478 s, estimated 1 s
+Ran all test suites matching __tests__/api/positions.test.ts.

@@ -1,0 +1,100 @@
+# ============================================================
+# k8s/04-network-policy.yaml
+# Firewall L4 de Kubernetes — principio de mínimo acceso
+# ============================================================
+
+# ── Política por defecto: DENY ALL ingress/egress ──────────
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: talento-humano
+spec:
+  podSelector: {}           # aplica a TODOS los pods del namespace
+  policyTypes:
+    - Ingress
+    - Egress
+
+# ── App puede recibir tráfico SOLO desde el Ingress ────────
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-to-app
+  namespace: talento-humano
+spec:
+  podSelector:
+    matchLabels:
+      app: th-app
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        # Solo desde el namespace del Ingress Controller (nginx/aws-load-balancer)
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+        # O desde pods del mismo namespace (ej: si hay un BFF interno)
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/part-of: talento-humano
+      ports:
+        - protocol: TCP
+          port: 3000
+
+# ── App puede SALIR solo a: PostgreSQL, Redis, DNS ─────────
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-egress
+  namespace: talento-humano
+spec:
+  podSelector:
+    matchLabels:
+      app: th-app
+  policyTypes:
+    - Egress
+  egress:
+    # DNS resolution
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    # PostgreSQL (RDS en VPC privada)
+    - ports:
+        - protocol: TCP
+          port: 5432
+    # Redis
+    - ports:
+        - protocol: TCP
+          port: 6379
+    # HTTPS (para llamadas externas: AWS S3, etc.)
+    - ports:
+        - protocol: TCP
+          port: 443
+
+# ── Prisma Studio solo accesible internamente ──────────────
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-prisma-studio
+  namespace: talento-humano
+spec:
+  podSelector:
+    matchLabels:
+      app: prisma-studio
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        # Solo desde pods con label de herramienta dev
+        - podSelector:
+            matchLabels:
+              role: dev-tool
+      ports:
+        - protocol: TCP
+          port: 5555

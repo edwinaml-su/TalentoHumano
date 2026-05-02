@@ -1,0 +1,238 @@
+
+> talento-humano@0.1.0 test
+> jest --passWithNoTests
+
+PASS __tests__/api/positions.test.ts
+PASS __tests__/api/shifts.test.ts
+PASS __tests__/api/attendance.test.ts
+  ΓùÅ Console
+
+    console.error
+      Attendance GET Error: Error: DB error
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\attendance.test.ts:91:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      47 |     return NextResponse.json(attendances);
+      48 |   } catch (error) {
+    > 49 |     console.error("Attendance GET Error:", error);
+         |             ^
+      50 |     return NextResponse.json({ error: "Failed to fetch attendance" }, { status: 500 });
+      51 |   }
+      52 | }
+
+      at GET (src/app/api/attendance/route.ts:49:13)
+      at Object.<anonymous> (__tests__/api/attendance.test.ts:95:22)
+
+    console.error
+      Attendance POST Error: Error: DB error
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\attendance.test.ts:167:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      94 |     }
+      95 |   } catch (error) {
+    > 96 |     console.error("Attendance POST Error:", error);
+         |             ^
+      97 |     return NextResponse.json({ error: "Failed to process attendance" }, { status: 500 });
+      98 |   }
+      99 | }
+
+      at POST (src/app/api/attendance/route.ts:96:13)
+      at Object.<anonymous> (__tests__/api/attendance.test.ts:175:22)
+
+PASS __tests__/api/employees-data.test.ts
+  ΓùÅ Console
+
+    console.error
+      Error fetching employees: Error: DB connection failed
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\employees-data.test.ts:78:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      14 |     return NextResponse.json(employees);
+      15 |   } catch (error) {
+    > 16 |     console.error("Error fetching employees:", error);
+         |             ^
+      17 |     return NextResponse.json({ error: "Failed to fetch employees" }, { status: 500 });
+      18 |   }
+      19 | }
+
+      at GET (src/app/api/employees-data/route.ts:16:13)
+      at Object.<anonymous> (__tests__/api/employees-data.test.ts:81:22)
+
+    console.error
+      Error creating employee: Error: Unique constraint violation
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\employees-data.test.ts:124:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      40 |     return NextResponse.json(employee, { status: 201 });
+      41 |   } catch (error) {
+    > 42 |     console.error("Error creating employee:", error);
+         |             ^
+      43 |     return NextResponse.json({ error: "Failed to create employee" }, { status: 500 });
+      44 |   }
+      45 | }
+
+      at POST (src/app/api/employees-data/route.ts:42:13)
+      at Object.<anonymous> (__tests__/api/employees-data.test.ts:128:22)
+
+    console.error
+      Error creating employee: Error: Invalid date
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\employees-data.test.ts:137:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      40 |     return NextResponse.json(employee, { status: 201 });
+      41 |   } catch (error) {
+    > 42 |     console.error("Error creating employee:", error);
+         |             ^
+      43 |     return NextResponse.json({ error: "Failed to create employee" }, { status: 500 });
+      44 |   }
+      45 | }
+
+      at POST (src/app/api/employees-data/route.ts:42:13)
+      at Object.<anonymous> (__tests__/api/employees-data.test.ts:141:22)
+
+FAIL __tests__/api/incidents.test.ts
+  ΓùÅ Console
+
+    console.error
+      Fetch incidents error: Error: DB error
+          at Object.<anonymous> (C:\proyecto\TalentoHumano\__tests__\api\incidents.test.ts:77:7)
+          at Promise.finally.completed (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (C:\proyecto\TalentoHumano\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:275:16)
+          at runTest (C:\proyecto\TalentoHumano\node_modules\jest-runner\build\index.js:343:7)
+
+      22 |     return NextResponse.json(incidents);
+      23 |   } catch (error) {
+    > 24 |     console.error("Fetch incidents error:", error);
+         |             ^
+      25 |     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+      26 |   }
+      27 | }
+
+      at GET (src/app/api/payroll/incidents/route.ts:24:13)
+      at Object.<anonymous> (__tests__/api/incidents.test.ts:83:22)
+
+  ΓùÅ POST /api/payroll/incidents ΓÇ║ crea incidencia con body v├ílido y retorna 200
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 400
+
+      112 |     const json = await response.json();
+      113 |
+    > 114 |     expect(response.status).toBe(200);
+          |                             ^
+      115 |     expect(json.payrollRunId).toBe('run-1');
+      116 |     expect(prisma.payrollIncident.create).toHaveBeenCalledTimes(1);
+      117 |   });
+
+      at Object.<anonymous> (__tests__/api/incidents.test.ts:114:29)
+
+  ΓùÅ POST /api/payroll/incidents ΓÇ║ usa fecha actual cuando no se proporciona date
+
+    TypeError: Cannot read properties of undefined (reading '0')
+
+      128 |     await POST(request);
+      129 |
+    > 130 |     const callArgs = (prisma.payrollIncident.create as jest.Mock).mock.calls[0][0];
+          |                                                                                ^
+      131 |     // date field should be undefined (Prisma defaults to now())
+      132 |     expect(callArgs.data.date).toBeUndefined();
+      133 |   });
+
+      at Object.<anonymous> (__tests__/api/incidents.test.ts:130:80)
+
+  ΓùÅ POST /api/payroll/incidents ΓÇ║ retorna 500 cuando Prisma falla en la creaci├│n
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 500
+    Received: 400
+
+      146 |     const json = await response.json();
+      147 |
+    > 148 |     expect(response.status).toBe(500);
+          |                             ^
+      149 |     expect(json.error).toBe('Internal Server Error');
+      150 |   });
+      151 | });
+
+      at Object.<anonymous> (__tests__/api/incidents.test.ts:148:29)
+
+PASS __tests__/lib/payroll-math.test.ts
+
+Test Suites: 1 failed, 5 passed, 6 total
+Tests:       3 failed, 38 passed, 41 total
+Snapshots:   0 total
+Time:        1.086 s
+Ran all test suites.

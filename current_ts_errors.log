@@ -1,0 +1,1 @@
+src/app/portal/dashboard/page.tsx(22,74): error TS2339: Property 'name' does not exist on type '{ department: { id: string; organizationId: string; gerenciaId: string | null; name: string; }; } & { id: string; title: string; description: string | null; departmentId: string; parentPositionId: string | null; }'.

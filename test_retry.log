@@ -1,0 +1,17 @@
+
+> talento-humano@0.1.0 test
+> jest --passWithNoTests __tests__/api/positions.test.ts
+
+PASS __tests__/api/positions.test.ts
+  GET /api/config/positions
+    ΓêÜ retorna lista de posiciones con sus departamentos (11 ms)
+    ΓêÜ cada posici├│n incluye la relaci├│n department (1 ms)
+    ΓêÜ retorna lista vac├¡a cuando no hay posiciones (1 ms)
+    ΓêÜ ordena las posiciones por t├¡tulo (asc) ΓÇö verifica que Prisma recibe el orderBy correcto (1 ms)
+    ΓêÜ retorna 500 cuando Prisma lanza un error (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        0.559 s, estimated 1 s
+Ran all test suites matching __tests__/api/positions.test.ts.

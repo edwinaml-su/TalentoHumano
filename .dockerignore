@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+*.log
+dev_output.log
+.env
+.env.*
+!.env.example
+Dockerfile*
+docker-compose*.yml
+infra/
+k8s/
+.gemini/

@@ -1,0 +1,93 @@
+
+> talento-humano@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 6.2s
+  Running TypeScript ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/54) ...
+  Generating static pages using 15 workers (13/54) 
+  Generating static pages using 15 workers (26/54) 
+  Generating static pages using 15 workers (40/54) 
+Γ£ô Generating static pages using 15 workers (54/54) in 391.0ms
+  Finalizing page optimization ...
+
+Route (app)
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /admin/roles
+Γö£ Γùï /admin/users
+Γö£ ╞Æ /api/admin/roles
+Γö£ ╞Æ /api/admin/users
+Γö£ ╞Æ /api/attendance
+Γö£ ╞Æ /api/attendance/import
+Γö£ ╞Æ /api/attendance/monthly
+Γö£ ╞Æ /api/auth/access
+Γö£ ╞Æ /api/config/afp-types
+Γö£ ╞Æ /api/config/afp-types/[id]
+Γö£ ╞Æ /api/config/banks
+Γö£ ╞Æ /api/config/banks/[id]
+Γö£ ╞Æ /api/config/contract-types
+Γö£ ╞Æ /api/config/contract-types/[id]
+Γö£ ╞Æ /api/config/departments
+Γö£ ╞Æ /api/config/departments/[id]
+Γö£ ╞Æ /api/config/gerencias
+Γö£ ╞Æ /api/config/gerencias/[id]
+Γö£ ╞Æ /api/config/locations
+Γö£ ╞Æ /api/config/locations/[id]
+Γö£ ╞Æ /api/config/positions
+Γö£ ╞Æ /api/config/positions/[id]
+Γö£ ╞Æ /api/config/shifts
+Γö£ ╞Æ /api/config/shifts/[id]
+Γö£ ╞Æ /api/employees-data
+Γö£ ╞Æ /api/employees-data/[id]
+Γö£ ╞Æ /api/employees-data/[id]/documents
+Γö£ ╞Æ /api/employees-data/[id]/obligations
+Γö£ ╞Æ /api/employees-data/[id]/obligations/[obsId]
+Γö£ ╞Æ /api/exports/bank-ach
+Γö£ ╞Æ /api/exports/isss
+Γö£ ╞Æ /api/health
+Γö£ ╞Æ /api/localization/countries
+Γö£ ╞Æ /api/localization/tax-tables
+Γö£ ╞Æ /api/organizations
+Γö£ ╞Æ /api/payroll-runs
+Γö£ ╞Æ /api/payroll-runs/[id]/close
+Γö£ ╞Æ /api/payroll-runs/[id]/employees
+Γö£ ╞Æ /api/payroll-runs/process
+Γö£ ╞Æ /api/payroll/incidents
+Γö£ ╞Æ /api/positions
+Γö£ ╞Æ /api/positions/[id]
+Γö£ ╞Æ /api/settlements/calculate
+Γö£ ╞Æ /api/vacations/accrued
+Γö£ Γùï /attendance
+Γö£ Γùï /catalogs
+Γö£ Γùï /config/afp-types
+Γö£ Γùï /config/banks
+Γö£ Γùï /config/contract-types
+Γö£ Γùï /config/departments
+Γö£ Γùï /config/gerencias
+Γö£ Γùï /config/locations
+Γö£ Γùï /config/positions
+Γö£ Γùï /config/shifts
+Γö£ Γùï /employees
+Γö£ ╞Æ /employees/[id]/edit
+Γö£ Γùï /employees/new
+Γö£ Γùï /localization
+Γö£ Γùï /organizations
+Γö£ Γùï /payroll
+Γö£ ╞Æ /payroll/[id]
+Γö£ Γùï /payroll/incidents
+Γö£ Γùï /portal/dashboard
+Γö£ Γùï /portal/pay-stubs
+Γö£ Γùï /positions
+Γö£ Γùï /positions/hierarchy
+Γöö Γùï /reports/payroll
+
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

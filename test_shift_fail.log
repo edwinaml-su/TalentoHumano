@@ -1,0 +1,57 @@
+FAIL __tests__/api/shifts.test.ts
+  GET /api/config/shifts
+    ΓêÜ retorna todos los turnos con sus departamentos y ubicaciones (11 ms)
+    ΓêÜ retorna arreglo vac├¡o si no hay turnos (1 ms)
+    ΓêÜ retorna 500 cuando Prisma falla (1 ms)
+  POST /api/config/shifts
+    ├ù crea turno con organizaci├│n existente
+    ├ù crea turno con arreglos vac├¡os de departments y locations
+    ├ù ΓÜá∩╕Å EDGE CASE: retorna 500 cuando no existe ninguna organizaci├│n en la BD
+
+  ΓùÅ POST /api/config/shifts ΓÇ║ crea turno con organizaci├│n existente
+
+    TypeError: Cannot read properties of undefined (reading 'findFirst')
+
+      81 |
+      82 |   it('crea turno con organizaci├│n existente', async () => {
+    > 83 |     (prisma.organization.findFirst as jest.Mock).mockResolvedValueOnce(mockOrg);
+         |                          ^
+      84 |     (prisma.shift.create as jest.Mock).mockResolvedValueOnce({
+      85 |       ...mockShift,
+      86 |       name: 'Turno Nocturno',
+
+      at Object.<anonymous> (__tests__/api/shifts.test.ts:83:26)
+
+  ΓùÅ POST /api/config/shifts ΓÇ║ crea turno con arreglos vac├¡os de departments y locations
+
+    TypeError: Cannot read properties of undefined (reading 'findFirst')
+
+      101 |
+      102 |   it('crea turno con arreglos vac├¡os de departments y locations', async () => {
+    > 103 |     (prisma.organization.findFirst as jest.Mock).mockResolvedValueOnce(mockOrg);
+          |                          ^
+      104 |     (prisma.shift.create as jest.Mock).mockResolvedValueOnce({
+      105 |       ...mockShift,
+      106 |       departments: [],
+
+      at Object.<anonymous> (__tests__/api/shifts.test.ts:103:26)
+
+  ΓùÅ POST /api/config/shifts ΓÇ║ ΓÜá∩╕Å EDGE CASE: retorna 500 cuando no existe ninguna organizaci├│n en la BD
+
+    TypeError: Cannot read properties of undefined (reading 'findFirst')
+
+      120 |   it('ΓÜá∩╕Å EDGE CASE: retorna 500 cuando no existe ninguna organizaci├│n en la BD', async () => {
+      121 |     // This is a known weak point in the current API implementation
+    > 122 |     (prisma.organization.findFirst as jest.Mock).mockResolvedValueOnce(null);
+          |                          ^
+      123 |
+      124 |     const request = new Request('http://localhost/api/config/shifts', {
+      125 |       method: 'POST',
+
+      at Object.<anonymous> (__tests__/api/shifts.test.ts:122:26)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 3 passed, 6 total
+Snapshots:   0 total
+Time:        0.574 s
+Ran all test suites matching __tests__/api/shifts.test.ts.
