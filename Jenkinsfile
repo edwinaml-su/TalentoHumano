@@ -198,7 +198,7 @@ spec:
     // ── 8. TERRAFORM PLAN (solo en main) ─────────────────────
     stage('🏗️ Terraform Plan') {
       when {
-        branch 'main'
+        branch 'master'
       }
       steps {
         container('kubectl') {
@@ -251,7 +251,7 @@ spec:
     stage('🚀 Deploy Production') {
       when {
         allOf {
-          branch 'main'
+          branch 'master'
           expression { params.ENVIRONMENT == 'production' }
         }
       }
