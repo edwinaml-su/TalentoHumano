@@ -10,6 +10,7 @@ const maxSizeBytes = 10 * 1024 * 1024; // 10 MB
 const MetaSchema = z.object({
   category: z.enum(["IDENTIFICATION", "CONTRACTUAL", "ACADEMIC", "PAYROLL", "LEGAL"]),
   title: z.string().min(1, "El título es requerido"),
+  expiryDate: z.string().optional().nullable().transform(val => !val ? null : new Date(val))
 });
 
 export async function GET(
@@ -38,9 +39,10 @@ export async function POST(
     const file = formData.get("file") as File | null;
     const category = formData.get("category") as string;
     const title = formData.get("title") as string;
+    const expiryDate = formData.get("expiryDate") as string | null;
 
     // Validate metadata
-    const meta = MetaSchema.parse({ category, title });
+    const meta = MetaSchema.parse({ category, title, expiryDate });
 
     // Validate file presence and constraints
     if (!file) {
@@ -79,6 +81,7 @@ export async function POST(
         category: meta.category,
         title: meta.title,
         fileUrl,
+        expiryDate: meta.expiryDate,
       },
     });
 

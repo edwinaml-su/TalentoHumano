@@ -27733,6 +27733,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory | null
     title: string | null
     fileUrl: string | null
+    expiryDate: Date | null
     uploadDate: Date | null
   }
 
@@ -27742,6 +27743,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory | null
     title: string | null
     fileUrl: string | null
+    expiryDate: Date | null
     uploadDate: Date | null
   }
 
@@ -27751,6 +27753,7 @@ export namespace Prisma {
     category: number
     title: number
     fileUrl: number
+    expiryDate: number
     uploadDate: number
     _all: number
   }
@@ -27762,6 +27765,7 @@ export namespace Prisma {
     category?: true
     title?: true
     fileUrl?: true
+    expiryDate?: true
     uploadDate?: true
   }
 
@@ -27771,6 +27775,7 @@ export namespace Prisma {
     category?: true
     title?: true
     fileUrl?: true
+    expiryDate?: true
     uploadDate?: true
   }
 
@@ -27780,6 +27785,7 @@ export namespace Prisma {
     category?: true
     title?: true
     fileUrl?: true
+    expiryDate?: true
     uploadDate?: true
     _all?: true
   }
@@ -27862,6 +27868,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl: string | null
+    expiryDate: Date | null
     uploadDate: Date
     _count: EmployeeDocumentCountAggregateOutputType | null
     _min: EmployeeDocumentMinAggregateOutputType | null
@@ -27888,6 +27895,7 @@ export namespace Prisma {
     category?: boolean
     title?: boolean
     fileUrl?: boolean
+    expiryDate?: boolean
     uploadDate?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employeeDocument"]>
@@ -27898,6 +27906,7 @@ export namespace Prisma {
     category?: boolean
     title?: boolean
     fileUrl?: boolean
+    expiryDate?: boolean
     uploadDate?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employeeDocument"]>
@@ -27908,6 +27917,7 @@ export namespace Prisma {
     category?: boolean
     title?: boolean
     fileUrl?: boolean
+    expiryDate?: boolean
     uploadDate?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employeeDocument"]>
@@ -27918,10 +27928,11 @@ export namespace Prisma {
     category?: boolean
     title?: boolean
     fileUrl?: boolean
+    expiryDate?: boolean
     uploadDate?: boolean
   }
 
-  export type EmployeeDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "category" | "title" | "fileUrl" | "uploadDate", ExtArgs["result"]["employeeDocument"]>
+  export type EmployeeDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "category" | "title" | "fileUrl" | "expiryDate" | "uploadDate", ExtArgs["result"]["employeeDocument"]>
   export type EmployeeDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
   }
@@ -27943,6 +27954,7 @@ export namespace Prisma {
       category: $Enums.DocumentCategory
       title: string
       fileUrl: string | null
+      expiryDate: Date | null
       uploadDate: Date
     }, ExtArgs["result"]["employeeDocument"]>
     composites: {}
@@ -28373,6 +28385,7 @@ export namespace Prisma {
     readonly category: FieldRef<"EmployeeDocument", 'DocumentCategory'>
     readonly title: FieldRef<"EmployeeDocument", 'String'>
     readonly fileUrl: FieldRef<"EmployeeDocument", 'String'>
+    readonly expiryDate: FieldRef<"EmployeeDocument", 'DateTime'>
     readonly uploadDate: FieldRef<"EmployeeDocument", 'DateTime'>
   }
     
@@ -52724,6 +52737,7 @@ export namespace Prisma {
     category: 'category',
     title: 'title',
     fileUrl: 'fileUrl',
+    expiryDate: 'expiryDate',
     uploadDate: 'uploadDate'
   };
 
@@ -54833,6 +54847,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFilter<"EmployeeDocument"> | $Enums.DocumentCategory
     title?: StringFilter<"EmployeeDocument"> | string
     fileUrl?: StringNullableFilter<"EmployeeDocument"> | string | null
+    expiryDate?: DateTimeNullableFilter<"EmployeeDocument"> | Date | string | null
     uploadDate?: DateTimeFilter<"EmployeeDocument"> | Date | string
     employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
   }
@@ -54843,6 +54858,7 @@ export namespace Prisma {
     category?: SortOrder
     title?: SortOrder
     fileUrl?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
     uploadDate?: SortOrder
     employee?: EmployeeOrderByWithRelationInput
   }
@@ -54856,6 +54872,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFilter<"EmployeeDocument"> | $Enums.DocumentCategory
     title?: StringFilter<"EmployeeDocument"> | string
     fileUrl?: StringNullableFilter<"EmployeeDocument"> | string | null
+    expiryDate?: DateTimeNullableFilter<"EmployeeDocument"> | Date | string | null
     uploadDate?: DateTimeFilter<"EmployeeDocument"> | Date | string
     employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
   }, "id">
@@ -54866,6 +54883,7 @@ export namespace Prisma {
     category?: SortOrder
     title?: SortOrder
     fileUrl?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
     uploadDate?: SortOrder
     _count?: EmployeeDocumentCountOrderByAggregateInput
     _max?: EmployeeDocumentMaxOrderByAggregateInput
@@ -54881,6 +54899,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryWithAggregatesFilter<"EmployeeDocument"> | $Enums.DocumentCategory
     title?: StringWithAggregatesFilter<"EmployeeDocument"> | string
     fileUrl?: StringNullableWithAggregatesFilter<"EmployeeDocument"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"EmployeeDocument"> | Date | string | null
     uploadDate?: DateTimeWithAggregatesFilter<"EmployeeDocument"> | Date | string
   }
 
@@ -58232,6 +58251,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
     employee: EmployeeCreateNestedOneWithoutDocumentsInput
   }
@@ -58242,6 +58262,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
   }
 
@@ -58250,6 +58271,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
     employee?: EmployeeUpdateOneRequiredWithoutDocumentsNestedInput
   }
@@ -58260,6 +58282,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -58269,6 +58292,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
   }
 
@@ -58277,6 +58301,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -58286,6 +58311,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -61564,6 +61590,7 @@ export namespace Prisma {
     category?: SortOrder
     title?: SortOrder
     fileUrl?: SortOrder
+    expiryDate?: SortOrder
     uploadDate?: SortOrder
   }
 
@@ -61573,6 +61600,7 @@ export namespace Prisma {
     category?: SortOrder
     title?: SortOrder
     fileUrl?: SortOrder
+    expiryDate?: SortOrder
     uploadDate?: SortOrder
   }
 
@@ -61582,6 +61610,7 @@ export namespace Prisma {
     category?: SortOrder
     title?: SortOrder
     fileUrl?: SortOrder
+    expiryDate?: SortOrder
     uploadDate?: SortOrder
   }
 
@@ -70801,6 +70830,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
   }
 
@@ -70809,6 +70839,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
   }
 
@@ -71883,6 +71914,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFilter<"EmployeeDocument"> | $Enums.DocumentCategory
     title?: StringFilter<"EmployeeDocument"> | string
     fileUrl?: StringNullableFilter<"EmployeeDocument"> | string | null
+    expiryDate?: DateTimeNullableFilter<"EmployeeDocument"> | Date | string | null
     uploadDate?: DateTimeFilter<"EmployeeDocument"> | Date | string
   }
 
@@ -80115,6 +80147,7 @@ export namespace Prisma {
     category: $Enums.DocumentCategory
     title: string
     fileUrl?: string | null
+    expiryDate?: Date | string | null
     uploadDate?: Date | string
   }
 
@@ -80480,6 +80513,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -80488,6 +80522,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -80496,6 +80531,7 @@ export namespace Prisma {
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     title?: StringFieldUpdateOperationsInput | string
     fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     uploadDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

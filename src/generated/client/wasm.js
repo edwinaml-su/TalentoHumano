@@ -316,6 +316,7 @@ exports.Prisma.EmployeeDocumentScalarFieldEnum = {
   category: 'category',
   title: 'title',
   fileUrl: 'fileUrl',
+  expiryDate: 'expiryDate',
   uploadDate: 'uploadDate'
 };
 

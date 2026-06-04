@@ -24,6 +24,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import PayrollBenefitsSection from "@/components/PayrollBenefitsSection";
 import AcademicProfessionalSection from "@/components/AcademicProfessionalSection";
+import EmployeeDocumentsSection from "@/components/EmployeeDocumentsSection";
 
 export default function EditEmployeePage() {
   const params = useParams();
@@ -115,6 +116,7 @@ export default function EditEmployeePage() {
     { id: "contract", label: "Contractual y Legal", icon: ShieldCheck },
     { id: "academic", label: "Académico y Prof.", icon: GraduationCap },
     { id: "payroll", label: "Nómina y Beneficios", icon: CreditCard },
+    { id: "documents", label: "Documentos", icon: FileText },
   ];
 
   return (
@@ -545,7 +547,11 @@ export default function EditEmployeePage() {
               <AcademicProfessionalSection employeeId={employee.id} />
             </div>
           )}
-          {/* Omitted other tabs for brevity in this step, but functionality is enabled */}
+          {activeTab === "documents" && (
+            <div className="form-section">
+              <EmployeeDocumentsSection employeeId={employee.id} />
+            </div>
+          )}
         </div>
       </div>
 

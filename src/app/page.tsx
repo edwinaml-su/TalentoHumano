@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Shell } from "@/components/Shell";
 import { 
   Users, 
@@ -7,7 +9,10 @@ import {
   DollarSign, 
   Clock,
   ArrowUpRight,
-  ChevronRight
+  ChevronRight,
+  ShieldAlert,
+  FileText,
+  Loader2
 } from "lucide-react";
 
 const stats = [
@@ -24,6 +29,25 @@ const recentActivities = [
 ];
 
 export default function Dashboard() {
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [loadingAlerts, setLoadingAlerts] = useState(true);
+
+  useEffect(() => {
+    async function fetchAlerts() {
+      try {
+        const res = await fetch("/api/admin/documents/expiring");
+        if (res.ok) {
+          setAlerts(await res.json());
+        }
+      } catch (err) {
+        console.error("Error fetching expiring documents:", err);
+      } finally {
+        setLoadingAlerts(false);
+      }
+    }
+    fetchAlerts();
+  }, []);
+
   return (
     <Shell>
       <div className="dashboard-header animate-fade-in">
@@ -93,6 +117,75 @@ export default function Dashboard() {
             Ver Todas las Auditorías
           </button>
         </div>
+      </div>
+
+      {/* Alertas de Vencimiento de Documentación */}
+      <div className="card alert-card-container animate-slide-up" style={{ animationDelay: "0.3s", marginTop: "2rem" }}>
+        <div className="card-header flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl">
+              <ShieldAlert size={24} />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-slate-800">Alertas de Vencimiento de Documentación</h3>
+              <p className="text-xs text-slate-400 mt-1 font-medium">Documentos y certificaciones expirados o por expirar en los próximos 30 días.</p>
+            </div>
+          </div>
+          <span className="px-3 py-1 bg-rose-100 text-rose-700 text-[10px] font-black uppercase tracking-widest rounded-full">
+            Control de Vigencia
+          </span>
+        </div>
+        
+        {loadingAlerts ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="animate-spin text-rose-600" size={32} />
+          </div>
+        ) : alerts.length === 0 ? (
+          <div className="py-12 text-center text-slate-400 font-medium italic border border-dashed border-slate-100 rounded-2xl bg-slate-50/20">
+            No hay alertas de vencimiento para los próximos 30 días.
+          </div>
+        ) : (
+          <div className="alerts-list divide-y divide-slate-50">
+            {alerts.map((alert: any) => (
+              <div key={alert.id} className="alert-item flex items-center justify-between py-4 first:pt-0 last:pb-0">
+                <div className="flex items-center gap-4">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${alert.isExpired ? 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-amber-600'}`}>
+                    <FileText size={18} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-800 text-sm">
+                      {alert.title} <span className={`text-[10px] font-black uppercase tracking-widest ml-2 ${alert.isExpired ? 'text-rose-500' : 'text-amber-500'}`}>({alert.category})</span>
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                      Colaborador: <span className="font-semibold text-slate-700">{alert.employeeName}</span> ({alert.employeeCode})
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-6">
+                  <div className="text-right">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vence el</p>
+                    <p className="font-bold text-slate-700 text-xs mt-0.5">
+                      {new Date(alert.expiryDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                  
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                    alert.isExpired 
+                      ? 'bg-rose-50 text-rose-600 border-rose-100' 
+                      : 'bg-amber-50 text-amber-600 border-amber-100'
+                  }`}>
+                    {alert.isExpired ? 'Expirado' : `Vence en ${alert.daysRemaining} días`}
+                  </span>
+
+                  <Link href={`/employees/${alert.employeeId}/edit`} className="p-2.5 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-primary transition-all">
+                    <ChevronRight size={18} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <style jsx>{`

@@ -323,6 +323,7 @@ model EmployeeDocument {
   category       DocumentCategory // IDENTIFICATION, CONTRACTUAL, ACADEMIC, PAYROLL
   title          String       // DUI frontal, CV, Título Bachiller, etc.
   fileUrl        String?      // Ruta al almacenamiento (S3/Local)
+  expiryDate     DateTime?
   uploadDate     DateTime     @default(now())
 }
 
