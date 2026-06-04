@@ -15,6 +15,9 @@ jest.mock('@/lib/prisma', () => ({
       findMany: jest.fn(),
       create: jest.fn(),
     },
+    currency: {
+      findFirst: jest.fn(),
+    },
   },
 }));
 import { prisma } from '@/lib/prisma';
@@ -103,6 +106,7 @@ describe('POST /api/employees-data', () => {
   };
 
   it('crea empleado con datos válidos y retorna 201', async () => {
+    (prisma.currency.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'usd-id', code: 'USD' });
     (prisma.employee.create as jest.Mock).mockResolvedValueOnce({
       ...mockEmployee,
       id: 'emp-2',
@@ -120,6 +124,7 @@ describe('POST /api/employees-data', () => {
   });
 
   it('retorna 500 cuando Prisma rechaza la creación', async () => {
+    (prisma.currency.findFirst as jest.Mock).mockResolvedValueOnce({ id: 'usd-id', code: 'USD' });
     (prisma.employee.create as jest.Mock).mockRejectedValueOnce(
       new Error('Unique constraint violation')
     );
@@ -129,17 +134,15 @@ describe('POST /api/employees-data', () => {
     const json = await response.json();
 
     expect(response.status).toBe(500);
-    expect(json.error).toBe('Failed to create employee');
+    expect(json.error).toBe('No se pudo crear el expediente. Revise duplicados o restricciones de clave.');
   });
 
   it('edge case: hireDate inválido no provoca crash silencioso', async () => {
-    (prisma.employee.create as jest.Mock).mockRejectedValueOnce(
-      new Error('Invalid date')
-    );
-
     const request = buildRequest({ ...validBody, hireDate: 'not-a-date' });
     const response = await POST(request);
+    const json = await response.json();
 
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(400);
+    expect(json.error).toBe('Fecha de ingreso inválida');
   });
 });

@@ -61,16 +61,18 @@ export function Navbar() {
             <p className="text-xs text-gray-400">Administrador</p>
           </div>
           <button 
-          onClick={async () => {
-            await logout();
-            window.location.href = "/login";
-          }}
-          className="w-10 h-10 rounded-xl border border-gray-100 flex items-center justify-center hover:bg-rose-50 hover:text-rose-600 transition-all text-gray-400"
-          title="Cerrar Sesión"
-        >
-          <LogOut size={18} />
-        </button>
+            onClick={async () => {
+              await logout();
+              window.location.href = "/login";
+            }}
+            className="w-10 h-10 rounded-xl border border-gray-100 flex items-center justify-center hover:bg-rose-50 hover:text-rose-600 transition-all text-gray-400"
+            title="Cerrar Sesión"
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
       </div>
     </nav>
   );
 }
+

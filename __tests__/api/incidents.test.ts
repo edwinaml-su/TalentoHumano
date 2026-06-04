@@ -7,7 +7,9 @@ jest.mock('@/lib/prisma', () => ({
   prisma: {
     payrollIncident: {
       findMany: jest.fn(),
+      findFirst: jest.fn(),
       create: jest.fn(),
+      update: jest.fn(),
       delete: jest.fn(),
     },
     payrollRun: {
@@ -102,6 +104,7 @@ describe('POST /api/payroll/incidents', () => {
 
   it('crea incidencia con body válido y retorna 200', async () => {
     (prisma.payrollRun.findUnique as jest.Mock).mockResolvedValueOnce({ id: 'run-1', status: 'DRAFT' });
+    (prisma.payrollIncident.findFirst as jest.Mock).mockResolvedValueOnce(null);
     (prisma.payrollIncident.create as jest.Mock).mockResolvedValueOnce(mockIncident);
 
     const request = new Request('http://localhost/api/payroll/incidents', {
@@ -119,6 +122,7 @@ describe('POST /api/payroll/incidents', () => {
 
   it('usa fecha actual cuando no se proporciona date', async () => {
     (prisma.payrollRun.findUnique as jest.Mock).mockResolvedValueOnce({ id: 'run-1', status: 'DRAFT' });
+    (prisma.payrollIncident.findFirst as jest.Mock).mockResolvedValueOnce(null);
     (prisma.payrollIncident.create as jest.Mock).mockResolvedValueOnce(mockIncident);
 
     const bodyWithoutDate = { ...validBody, date: undefined };
@@ -136,6 +140,7 @@ describe('POST /api/payroll/incidents', () => {
 
   it('retorna 500 cuando Prisma falla en la creación', async () => {
     (prisma.payrollRun.findUnique as jest.Mock).mockResolvedValueOnce({ id: 'run-1', status: 'DRAFT' });
+    (prisma.payrollIncident.findFirst as jest.Mock).mockResolvedValueOnce(null);
     (prisma.payrollIncident.create as jest.Mock).mockRejectedValueOnce(
       new Error('FK constraint violation')
     );

@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { Suspense } from "react";
 import Link from "next/link";
+import MoodCheck from "@/components/portal/MoodCheck";
+import { Toaster } from "react-hot-toast";
 
 async function EmployeeProfile({ employeeId }: { employeeId: string }) {
   const employee = await prisma.employee.findUnique({
@@ -54,10 +56,13 @@ export default async function EmployeeDashboardPage() {
   
   return (
     <div className="p-8 max-w-7xl mx-auto">
+      <Toaster position="top-right" />
       <header className="mb-10">
         <h1 className="text-3xl font-bold text-gray-900">Hola, {employee?.firstName} 👋</h1>
         <p className="text-gray-500 mt-1">Bienvenido a tu portal de autoservicio.</p>
       </header>
+
+      <MoodCheck employeeName={employee?.firstName || ""} />
 
       <Suspense fallback={<div>Cargando perfil...</div>}>
         {employee && <EmployeeProfile employeeId={employee.id} />}
@@ -74,14 +79,18 @@ export default async function EmployeeDashboardPage() {
             <span className="text-2xl mb-2 block">🏖️</span>
             <span className="font-medium text-gray-900">Vacaciones</span>
           </Link>
-          <button className="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all text-left">
-            <span className="text-2xl mb-2 block">🏦</span>
-            <span className="font-medium text-gray-900">Datos Bancarios</span>
-          </button>
-          <button className="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all text-left">
-            <span className="text-2xl mb-2 block">🔑</span>
-            <span className="font-medium text-gray-900">Seguridad</span>
-          </button>
+          <Link href="/portal/training" className="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all text-left block">
+            <span className="text-2xl mb-2 block">🎓</span>
+            <span className="font-medium text-gray-900">Capacitación</span>
+          </Link>
+          <Link href="/portal/performance" className="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all text-left block">
+            <span className="text-2xl mb-2 block">🏆</span>
+            <span className="font-medium text-gray-900">Mi Desempeño</span>
+          </Link>
+          <Link href="/portal/career" className="p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all text-left block">
+            <span className="text-2xl mb-2 block">🚀</span>
+            <span className="font-medium text-gray-900">Mi Carrera</span>
+          </Link>
         </div>
       </section>
     </div>

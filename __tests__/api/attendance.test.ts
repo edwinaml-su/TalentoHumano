@@ -12,6 +12,9 @@ jest.mock('@/lib/prisma', () => ({
       create: jest.fn(),
       update: jest.fn(),
     },
+    employee: {
+      findUnique: jest.fn(),
+    },
   },
 }));
 import { prisma } from '@/lib/prisma';
@@ -103,6 +106,7 @@ describe('GET /api/attendance', () => {
 // ─── POST /api/attendance (Clock-IN) ─────────────────────────────────────────
 describe('POST /api/attendance — Clock IN', () => {
   it('registra entrada (clock-in) y retorna 201', async () => {
+    (prisma.employee.findUnique as jest.Mock).mockResolvedValueOnce({ shiftId: 'shift-1' });
     (prisma.attendance.create as jest.Mock).mockResolvedValueOnce({
       ...mockAttendance,
       status: 'PRESENT',

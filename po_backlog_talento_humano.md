@@ -571,4 +571,123 @@ Para el cierre definitivo y despliegue a producción, se identifican los siguien
 4. **Validación SRE**: Aplicar el pipeline de Jenkins en el ambiente de Staging (AWS EKS).
 
 *Documento vivo — Actualizar con cada Sprint Review · Product Owner: @PO Experto Inversiones Avante*  
-*Última actualización: 18 Marzo 2026 (Closure Phase Complete)*
+*Última actualización: 02 Mayo 2026 (Phase 2 Complete)*
+
+---
+---
+
+# 📊 FASE 3: Talent Analytics & BI (Estrategia de Datos)
+
+La Fase 3 transforma los datos acumulados en **Inteligencia de Negocio** para la toma de decisiones al nivel de Junta Directiva.
+
+## 🎯 Nuevas Épicas — Fase 3
+
+### 📊 EP-11 · Dashboards de Analítica Avanzada
+**Prioridad:** CRITICAL · **ROI:** ★★★★★  
+**Objetivo:** Visualizar la salud organizacional en tiempo real mediante KPIs estratégicos.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-11.1 | Dashboard de Rotación (Turnover) Mensual/Anual | 8 | S13 | Critical |
+| US-11.2 | Análisis de Costos de Nómina vs Presupuesto | 13 | S13 | High |
+| US-11.3 | Demografía y Headcount (Pirámide de Edad, Género, Antigüedad) | 5 | S14 | Medium |
+
+---
+
+### 🛡️ EP-12 · Retención y Fidelización
+**Prioridad:** HIGH · **ROI:** ★★★★☆  
+**Objetivo:** Predecir el riesgo de fuga y gestionar el clima organizacional.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-12.1 | Encuestas de Clima Organizacional y eNPS | 8 | S15 | High |
+| US-12.2 | Módulo de Salida (Exit Interview) y Análisis de Causas | 5 | S15 | Medium |
+| US-12.3 | Visualización de Línea de Carrera Individual | 8 | S16 | Medium |
+
+---
+
+### 👑 EP-13 · Plan de Sucesión (9-Box Grid)
+**Prioridad:** MEDIUM · **ROI:** ★★★★☆  
+**Objetivo:** Identificar futuros líderes y asegurar la continuidad del negocio.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-13.1 | Matriz de Talento 9-Box (Desempeño vs Potencial) | 13 | S17 | High |
+| US-13.2 | Identificación de Puestos Críticos y Sucesores | 8 | S17 | Medium |
+| US-13.3 | Planes de Desarrollo Individual (PDI) Automatizados | 13 | S18 | Medium |
+
+---
+
+## 📈 Roadmap de Sprints — Fase 3
+
+```
+Sprint 13 (Sem 25-26) │ Analytics: Turnover + Costos de Nómina
+Sprint 14 (Sem 27-28) │ Analytics: Demografía + Exportación Ejecutiva
+Sprint 15 (Sem 29-30) │ Fidelización: eNPS + Exit Interviews
+Sprint 16 (Sem 31-32) │ Desarrollo: Líneas de Carrera
+Sprint 17 (Sem 33-34) │ Sucesión: Matriz 9-Box + Puestos Críticos
+Sprint 18 (Sem 35-36) │ Cierre: Consolidado Anual & Predictiva Lite
+```
+
+*Documento vivo — Actualizar con cada Sprint Review de Fase 3 · Product Owner: @PO Experto Inversiones Avante*
+
+
+---
+---
+
+# 🚀 FASE 2: Talento Humano Plus (Crecimiento & Desarrollo)
+
+La Fase 2 se enfoca en transformar el sistema de una herramienta de registro y pago a una plataforma de **Gestión de Talento Estratégico**.
+
+## 🎯 Nuevas Épicas — Fase 2
+
+### 🔵 EP-08 · Gestión del Desempeño (Performance)
+**Prioridad:** HIGH · **ROI:** ★★★★★  
+**Objetivo:** Medir el rendimiento individual y alinearlo con los objetivos estratégicos de Avante.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-08.1 | Definición de KPIs y Metas por Puesto/Empleado | 8 | S07 | Critical |
+| US-08.2 | Formulario de Evaluación 90° (Jefe → Colaborador) | 5 | S07 | High |
+| US-08.3 | Autoevaluación del Empleado desde el Portal | 5 | S08 | High |
+| US-08.4 | Dashboard de Desempeño y Feedback Continuo | 8 | S08 | Medium |
+
+---
+
+### 🟠 EP-09 · Reclutamiento y Selección (ATS)
+**Prioridad:** MEDIUM · **ROI:** ★★★★☆  
+**Objetivo:** Digitalizar el flujo de contratación y reducir el Time-to-Hire.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-09.1 | Publicación de Vacantes Internas/Externas | 5 | S09 | High |
+| US-09.2 | Recepción y Filtrado de CVs (Banco de Talento) | 8 | S09 | High |
+| US-09.3 | Pipeline de Selección (Entrevistas → Pruebas → Oferta) | 13 | S10 | Medium |
+
+---
+
+### 🟣 EP-10 · Capacitación y Desarrollo (LMS Lite)
+**Prioridad:** LOW · ** ROI:** ★★★☆☆  
+**Objetivo:** Gestionar el plan de carrera y cumplimiento de certificaciones obligatorias.
+
+| # | User Story | SP | Sprint | Prioridad |
+|---|------------|-------|--------|-----------|
+| US-10.1 | Catálogo de Cursos y Plan de Capacitación Anual | 5 | S11 | Medium |
+| US-10.2 | Registro de Asistencia a Cursos y Diplomas | 3 | S11 | Medium |
+| US-10.3 | Seguimiento de Vencimiento de Certificaciones Legales | 5 | S12 | High |
+
+---
+
+## 📈 Roadmap de Sprints — Fase 2
+
+```
+Sprint 07 (Sem 13-14) │ Desempeño: Metas + Evaluaciones Manager
+Sprint 08 (Sem 15-16) │ Desempeño: Autoevaluación + Dashboards
+Sprint 09 (Sem 17-18) │ Reclutamiento: Vacantes + Recepción CVs
+Sprint 10 (Sem 19-20) │ Reclutamiento: Pipeline + Onboarding Digital
+Sprint 11 (Sem 21-22) │ Capacitación: Plan Anual + Registro Cursos
+Sprint 12 (Sem 23-24) │ Estrategia: Sucesión + Retención de Talento
+```
+
+*Documento vivo — Actualizar con cada Sprint Review de Fase 2 · Product Owner: @PO Experto Inversiones Avante*
+

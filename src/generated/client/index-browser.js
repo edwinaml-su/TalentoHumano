@@ -510,6 +510,104 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PerformanceGoalScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  title: 'title',
+  description: 'description',
+  weight: 'weight',
+  targetValue: 'targetValue',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PerformanceReviewScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  evaluatorId: 'evaluatorId',
+  period: 'period',
+  status: 'status',
+  score: 'score',
+  feedback: 'feedback',
+  selfEvaluation: 'selfEvaluation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JobPostingScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  requirements: 'requirements',
+  salaryRange: 'salaryRange',
+  status: 'status',
+  locationId: 'locationId',
+  departmentId: 'departmentId',
+  positionId: 'positionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JobApplicationScalarFieldEnum = {
+  id: 'id',
+  jobPostingId: 'jobPostingId',
+  candidateName: 'candidateName',
+  candidateEmail: 'candidateEmail',
+  candidatePhone: 'candidatePhone',
+  resumeUrl: 'resumeUrl',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrainingCourseScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  durationHours: 'durationHours',
+  isMandatory: 'isMandatory',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrainingEnrollmentScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  courseId: 'courseId',
+  status: 'status',
+  score: 'score',
+  completionDate: 'completionDate',
+  certificateUrl: 'certificateUrl',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SurveyScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  type: 'type',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SurveyResponseScalarFieldEnum = {
+  id: 'id',
+  surveyId: 'surveyId',
+  employeeId: 'employeeId',
+  score: 'score',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -602,6 +700,50 @@ exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   REST_DAY: 'REST_DAY'
 };
 
+exports.GoalStatus = exports.$Enums.GoalStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  NOT_MET: 'NOT_MET'
+};
+
+exports.ReviewStatus = exports.$Enums.ReviewStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+};
+
+exports.JobStatus = exports.$Enums.JobStatus = {
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED',
+  DRAFT: 'DRAFT',
+  ON_HOLD: 'ON_HOLD'
+};
+
+exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
+  NEW: 'NEW',
+  SCREENING: 'SCREENING',
+  INTERVIEW: 'INTERVIEW',
+  OFFER: 'OFFER',
+  HIRED: 'HIRED',
+  REJECTED: 'REJECTED'
+};
+
+exports.EnrollmentStatus = exports.$Enums.EnrollmentStatus = {
+  ENROLLED: 'ENROLLED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED'
+};
+
+exports.SurveyType = exports.$Enums.SurveyType = {
+  CLIMATE: 'CLIMATE',
+  ENPS: 'ENPS',
+  EXIT: 'EXIT',
+  QUICK_MOOD: 'QUICK_MOOD'
+};
+
 exports.Prisma.ModelName = {
   ContractType: 'ContractType',
   Bank: 'Bank',
@@ -634,7 +776,15 @@ exports.Prisma.ModelName = {
   Attendance: 'Attendance',
   TaxTable: 'TaxTable',
   TaxBracket: 'TaxBracket',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  PerformanceGoal: 'PerformanceGoal',
+  PerformanceReview: 'PerformanceReview',
+  JobPosting: 'JobPosting',
+  JobApplication: 'JobApplication',
+  TrainingCourse: 'TrainingCourse',
+  TrainingEnrollment: 'TrainingEnrollment',
+  Survey: 'Survey',
+  SurveyResponse: 'SurveyResponse'
 };
 
 /**

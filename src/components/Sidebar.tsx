@@ -26,7 +26,15 @@ import {
   X,
   Menu,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Target,
+  Award,
+  GraduationCap,
+  Crown,
+  Map,
+  Heart,
+  UserMinus,
+  Lock
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -37,6 +45,7 @@ const menuStructure = [
     label: "Principal",
     items: [
       { icon: LayoutDashboard, label: "Tablero Central", href: "/" },
+      { icon: PieChart, label: "Analítica Estratégica", href: "/admin/analytics" },
     ]
   },
   {
@@ -49,7 +58,36 @@ const menuStructure = [
     ]
   },
   {
-    label: "Operaciones de Nómina",
+    label: "Gestión de Talento",
+    items: [
+      { icon: Target, label: "Desempeño & KPIs", href: "/admin/performance" },
+      { icon: Award, label: "Evaluaciones 360", href: "/admin/performance/reviews" },
+      { icon: GraduationCap, label: "Capacitación", href: "/admin/training" },
+    ]
+  },
+  {
+    label: "Atracción de Talento",
+    items: [
+      { icon: Briefcase, label: "Bolsa de Trabajo", href: "/admin/recruitment/jobs" },
+      { icon: UserPlus, label: "Candidatos y ATS", href: "/admin/recruitment/candidates" },
+    ]
+  },
+  {
+    label: "Talento & Sucesión",
+    items: [
+      { icon: Crown, label: "Matriz 9-Box", href: "/admin/talent/9box" },
+      { icon: Map, label: "Planes de Carrera", href: "/admin/talent/career" },
+    ]
+  },
+  {
+    label: "Cultura y Clima",
+    items: [
+      { icon: Heart, label: "Encuestas e eNPS", href: "/admin/surveys" },
+      { icon: UserMinus, label: "Análisis de Salida", href: "/admin/analytics/exit" },
+    ]
+  },
+  {
+    label: "Operaciones Financieras",
     items: [
       { icon: Banknote, label: "Procesamiento de Nómina", href: "/payroll" },
       { icon: CreditCard, label: "Gestión de Incidencia de Nomina", href: "/payroll/incidents" },
@@ -61,6 +99,7 @@ const menuStructure = [
     items: [
       { icon: UserPlus, label: "Gestión de Usuarios", href: "/admin/users" },
       { icon: ShieldCheck, label: "Roles y Permisos", href: "/admin/roles" },
+      { icon: Lock, label: "Centro de Auditoría", href: "/admin/audit" },
     ]
   },
   {

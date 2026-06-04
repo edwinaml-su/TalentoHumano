@@ -95,7 +95,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error creating employee:", error);
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: (error as any).errors[0].message }, { status: 400 });
+      return NextResponse.json({ error: error.issues[0]?.message || "Datos inválidos" }, { status: 400 });
     }
     return NextResponse.json({ error: "No se pudo crear el expediente. Revise duplicados o restricciones de clave." }, { status: 500 });
   }

@@ -166,6 +166,7 @@ model Department {
   gerencia       Gerencia?    @relation(fields: [gerenciaId], references: [id])
   positions      Position[]
   shifts         Shift[]
+  jobPostings    JobPosting[]
 }
 
 model Location {
@@ -178,19 +179,21 @@ model Location {
   users          UserUnitAssignment[]
   payrollRuns    PayrollRun[]
   costCenters    CostCenter[]
+  jobPostings    JobPosting[]
 }
 
 model Position {
-  id               String     @id @default(cuid())
+  id               String       @id @default(cuid())
   title            String
   description      String?
   departmentId     String
-  department       Department @relation(fields: [departmentId], references: [id])
+  department       Department   @relation(fields: [departmentId], references: [id])
   parentPositionId String?
-  parentPosition   Position?  @relation("PositionHierarchy", fields: [parentPositionId], references: [id])
-  subordinates     Position[] @relation("PositionHierarchy")
+  parentPosition   Position?    @relation("PositionHierarchy", fields: [parentPositionId], references: [id])
+  subordinates     Position[]   @relation("PositionHierarchy")
   employees        Employee[]
-  isActive         Boolean    @default(true)
+  jobPostings      JobPosting[]
+  isActive         Boolean      @default(true)
 }
 
 // 3. Maestro de Empleados (Expediente Digital según requerimientos)
@@ -264,6 +267,13 @@ model Employee {
   shift                Shift?                @relation(fields: [shiftId], references: [id])
   costCenterId         String?
   costCenter           CostCenter?           @relation(fields: [costCenterId], references: [id])
+
+  // FASE 2: Desempeño y Capacitación
+  performanceGoals     PerformanceGoal[]
+  performanceReviews   PerformanceReview[]
+  conductedEvaluations PerformanceReview[]  @relation("Evaluator")
+  enrollments          TrainingEnrollment[]
+  surveyResponses      SurveyResponse[]
 
   // Académico y Profesional
   studies        AcademicStudy[]
@@ -615,4 +625,166 @@ model AuditLog {
   details   Json? // Stores old/new values
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+// 🚀 FASE 2: Gestión de Desempeño
+model PerformanceGoal {
+  id          String     @id @default(cuid())
+  employeeId  String
+  employee    Employee   @relation(fields: [employeeId], references: [id])
+  title       String
+  description String?
+  weight      Decimal    @db.Decimal(5, 2) // Porcentaje de importancia (0-100)
+  targetValue String? // Meta cualitativa o cuantitativa
+  status      GoalStatus @default(IN_PROGRESS)
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum GoalStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NOT_MET
+}
+
+model PerformanceReview {
+  id             String       @id @default(cuid())
+  employeeId     String
+  employee       Employee     @relation(fields: [employeeId], references: [id])
+  evaluatorId    String
+  evaluator      Employee     @relation("Evaluator", fields: [evaluatorId], references: [id])
+  period         String // e.g. "Q1 2026", "Anual 2026"
+  status         ReviewStatus @default(PENDING)
+  score          Decimal?     @db.Decimal(5, 2)
+  feedback       String?
+  selfEvaluation String? // Employee's comments
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+enum ReviewStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// 🚀 FASE 2: Reclutamiento y Selección (ATS)
+model JobPosting {
+  id           String           @id @default(cuid())
+  title        String
+  description  String
+  requirements String?
+  salaryRange  String?
+  status       JobStatus        @default(OPEN)
+  locationId   String
+  location     Location         @relation(fields: [locationId], references: [id])
+  departmentId String
+  department   Department       @relation(fields: [departmentId], references: [id])
+  positionId   String?
+  position     Position?        @relation(fields: [positionId], references: [id])
+  applications JobApplication[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+enum JobStatus {
+  OPEN
+  CLOSED
+  DRAFT
+  ON_HOLD
+}
+
+model JobApplication {
+  id             String            @id @default(cuid())
+  jobPostingId   String
+  jobPosting     JobPosting        @relation(fields: [jobPostingId], references: [id])
+  candidateName  String
+  candidateEmail String
+  candidatePhone String?
+  resumeUrl      String?
+  status         ApplicationStatus @default(NEW)
+  notes          String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+enum ApplicationStatus {
+  NEW
+  SCREENING
+  INTERVIEW
+  OFFER
+  HIRED
+  REJECTED
+}
+
+// 🚀 FASE 2: Capacitación y Desarrollo (LMS Lite)
+model TrainingCourse {
+  id            String               @id @default(cuid())
+  title         String
+  description   String?
+  category      String? // e.g. "Seguridad", "Técnico", "Soft Skills"
+  durationHours Int                  @default(0)
+  isMandatory   Boolean              @default(false)
+  status        String               @default("ACTIVE")
+  enrollments   TrainingEnrollment[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+}
+
+model TrainingEnrollment {
+  id             String           @id @default(cuid())
+  employeeId     String
+  employee       Employee         @relation(fields: [employeeId], references: [id])
+  courseId       String
+  course         TrainingCourse   @relation(fields: [courseId], references: [id])
+  status         EnrollmentStatus @default(ENROLLED)
+  score          Decimal?         @db.Decimal(5, 2)
+  completionDate DateTime?
+  certificateUrl String?
+  notes          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([employeeId, courseId])
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+// 🚀 FASE 3: Retención y Fidelización (Survey & eNPS)
+model Survey {
+  id          String           @id @default(cuid())
+  title       String
+  description String?
+  type        SurveyType       @default(CLIMATE)
+  status      String           @default("ACTIVE")
+  responses   SurveyResponse[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+enum SurveyType {
+  CLIMATE
+  ENPS
+  EXIT
+  QUICK_MOOD
+}
+
+model SurveyResponse {
+  id         String    @id @default(cuid())
+  surveyId   String
+  survey     Survey    @relation(fields: [surveyId], references: [id])
+  employeeId String? // Optional for anonymous surveys
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+  score      Int // 0-10 for eNPS or similar
+  comment    String?
+  createdAt  DateTime  @default(now())
 }

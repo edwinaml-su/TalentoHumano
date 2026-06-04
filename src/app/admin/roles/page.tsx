@@ -1,108 +1,111 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shell } from "@/components/Shell";
 import { 
-  Shield, 
+  ShieldCheck, 
+  Key, 
+  Users, 
   Plus, 
-  Settings, 
-  Trash, 
-  Edit,
-  Users,
-  ShieldAlert
+  ChevronRight, 
+  Loader2,
+  Lock,
+  Edit2,
+  Trash2
 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function RolesAdminPage() {
+export default function RolesManagementPage() {
   const [roles, setRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function fetchRoles() {
+      try {
+        const res = await fetch("/api/admin/roles");
+        const data = await res.json();
+        setRoles(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchRoles();
   }, []);
 
-  const fetchRoles = async () => {
-    try {
-      const res = await fetch("/api/admin/roles");
-      const data = await res.json();
-      setRoles(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <Shell>
-      <div className="page-header animate-fade-in">
+    <div className="p-8 max-w-7xl mx-auto space-y-10">
+      <Toaster position="top-right" />
+      
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h1>Roles y Permisos</h1>
-          <p className="subtitle">Definición de perfiles de acceso y seguridad del sistema.</p>
-        </div>
-        <button className="btn btn-primary">
-          <Plus size={18} />
-          <span>Nuevo Rol</span>
-        </button>
-      </div>
-
-      <div className="roles-grid">
-        {loading ? (
-          <div className="loading">Cargando roles...</div>
-        ) : roles.map(role => (
-          <div key={role.id} className="role-card card glass animate-slide-up">
-            <div className="role-card-header">
-              <div className="role-icon-box">
-                <Shield size={24} />
-              </div>
-              <div className="role-meta">
-                <h3>{role.name}</h3>
-                <span className="user-count">
-                  <Users size={12} /> {role._count?.users || 0} Usuarios
-                </span>
-              </div>
-            </div>
-            
-            <p className="role-description">{role.description || "Sin descripción proporcionada."}</p>
-            
-            <div className="role-permissions-summary">
-              <ShieldAlert size={14} />
-              <span>Gestionar permisos granulares</span>
-            </div>
-
-            <div className="role-card-actions">
-              <button className="btn-icon-labeled"><Edit size={14} /> <span>Editar</span></button>
-              <button className="btn-icon-labeled delete"><Trash size={14} /> <span>Eliminar</span></button>
-            </div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="px-3 py-1 bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-2">
+              <Lock size={10} /> Control de Acceso
+            </span>
           </div>
-        ))}
-      </div>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">Roles y Permisos</h1>
+          <p className="text-slate-500 font-medium">Gestión granular de privilegios y perfiles de usuario.</p>
+        </div>
 
-      <style jsx>{`
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .subtitle { color: var(--muted-foreground); }
-        
-        .roles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-        
-        .role-card { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; border: 1px solid var(--border); }
-        .role-card-header { display: flex; align-items: center; gap: 1rem; }
-        
-        .role-icon-box { width: 48px; height: 48px; background: hsla(221, 100%, 31%, 0.1); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .role-meta h3 { margin: 0; font-size: 1.1rem; color: var(--foreground); }
-        .user-count { font-size: 0.75rem; color: var(--muted-foreground); display: flex; align-items: center; gap: 4px; }
-        
-        .role-description { font-size: 0.85rem; color: var(--muted-foreground); line-height: 1.5; min-height: 3em; }
-        
-        .role-permissions-summary { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 600; padding: 0.5rem; background: hsla(221, 100%, 31%, 0.05); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .role-permissions-summary:hover { background: hsla(221, 100%, 31%, 0.1); }
-        
-        .role-card-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
-        
-        .btn-icon-labeled { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0.5rem; background: var(--secondary); border: 1px solid var(--border); border-radius: 8px; font-size: 0.75rem; font-weight: 600; transition: all 0.2s; }
-        .btn-icon-labeled:hover { background: var(--border); }
-        .btn-icon-labeled.delete:hover { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
-        
-        .loading { grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--muted-foreground); }
-      `}</style>
-    </Shell>
+        <button className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-100 transition-all hover:bg-indigo-700">
+          <Plus size={20} /> Nuevo Rol
+        </button>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {loading ? (
+          <div className="col-span-3 flex items-center justify-center py-20">
+            <Loader2 className="animate-spin text-indigo-600" size={40} />
+          </div>
+        ) : (
+          roles.map((role: any) => (
+            <div key={role.id} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-md transition-all group">
+              <div className="flex justify-between items-start mb-6">
+                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-50 transition-colors">
+                  <ShieldCheck size={24} className="text-indigo-600" />
+                </div>
+                <div className="flex gap-2">
+                  <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors"><Edit2 size={16} /></button>
+                  <button className="p-2 text-slate-400 hover:text-rose-600 transition-colors"><Trash2 size={16} /></button>
+                </div>
+              </div>
+              
+              <h3 className="text-xl font-black text-slate-900 mb-2">{role.name}</h3>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6 h-10 overflow-hidden">{role.description}</p>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span>Permisos Asignados</span>
+                  <span className="text-indigo-600">{role.permissions?.length || 0}</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {role.permissions?.slice(0, 3).map((p: any) => (
+                    <span key={p.id} className="px-2 py-1 bg-slate-50 text-slate-600 rounded-lg text-[9px] font-bold">
+                      {p.action}:{p.subject}
+                    </span>
+                  ))}
+                  {role.permissions?.length > 3 && (
+                    <span className="px-2 py-1 bg-slate-50 text-slate-400 rounded-lg text-[9px] font-bold">
+                      +{role.permissions.length - 3} más
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users size={14} className="text-slate-400" />
+                  <span className="text-xs font-bold text-slate-600">{role._count?.users || 0} Usuarios</span>
+                </div>
+                <button className="text-[10px] font-black text-indigo-600 uppercase tracking-widest flex items-center gap-1">
+                  Gestionar <ChevronRight size={14} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 }

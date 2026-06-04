@@ -3,7 +3,7 @@ import { decrypt } from "@/lib/auth-utils";
 
 // 1. Specify protected and public routes
 const protectedRoutes = ["/", "/admin", "/employees", "/payroll", "/attendance", "/portal", "/config", "/organizations", "/positions"];
-const publicRoutes = ["/api/auth/login", "/api/health"];
+const publicRoutes = ["/api/auth/login", "/api/health", "/jobs", "/api/recruitment/apply"];
 
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
